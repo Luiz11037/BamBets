@@ -28,7 +28,7 @@ public class ApostaController : ControllerBase
             Valor = 20,
             Time_apostado = "Flamengo",
         });
-
+        
         ApostaList.Add(new Aposta{
             Id = nextId++,
             Valor = 10,
