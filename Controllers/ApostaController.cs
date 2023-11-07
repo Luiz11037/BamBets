@@ -3,24 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using apiBambets.Model;
 using apiBambets.Context;
 
-namespace apiBambets.Controllers;
-
-[Route("[controller]")]
-[ApiController]
-
-public class ApostaController : ControllerBase
+namespace apiBambets.Controllers
 {
-    private readonly ILogger<ApostaController> _logger;
+    [Route("[controller]")]
+    [ApiController]
+
+    public class ApostaController : ControllerBase
+    {
+        private readonly ILogger<ApostaController> _logger;
         private readonly apiBambetsContext _context;
  
-    public ApostaController(ILogger<ApostaController> logger , apiBambetsContext context)
-       {
-        _logger = logger;
-        _context = context;
-       }
+        public ApostaController(ILogger<ApostaController> logger , apiBambetsContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
 
-    [HttpGet]
-        public ActionResult<IEnumerable<Aposta>> Get()
+        [HttpGet]
+         public ActionResult<IEnumerable<Aposta>> Get()
         {
             var apostas = _context.Apostas.ToList();
                 if (apostas is null)
@@ -37,4 +37,41 @@ public class ApostaController : ControllerBase
                 return NotFound("Não encontrado, parcero");
             return aposta;
         }
+
+        [HttpPost]
+        public ActionResult Post(Aposta aposta)
+        {
+            _context.Apostas.Add(aposta);
+            _context.SaveChanges();
+
+            return new CreatedAtRouteResult("GetAposta",
+            new{id = aposta.Id}, aposta);
+        }
+
+        [HttpPut("{id:int}")]
+        public ActionResult Put(int id, Aposta aposta)
+        {
+            if(id != aposta.Id)
+                return BadRequest();
+
+            _context.Entry(aposta).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.SaveChanges();
+
+            return Ok(aposta);
+        }
+
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id)
+        {
+            var aposta = _context.Apostas.FirstOrDefault(p => p.Id == id);
+
+            if(aposta is null)
+                return NotFound();
+
+            _context.Apostas.Remove(aposta);
+            _context.SaveChanges();
+
+            return Ok(aposta);
+        }
+    }
 }
