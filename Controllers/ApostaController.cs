@@ -1,54 +1,40 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Bambets.Models;
+using apiBambets.Model;
+using apiBambets.Context;
 
-namespace Bambets.Controllers;
+namespace apiBambets.Controllers;
 
 [Route("[controller]")]
 [ApiController]
 
 public class ApostaController : ControllerBase
 {
-    private readonly ILogger<Aposta> _logger;
-    public ApostaController(ILogger<Aposta> logger)
-    {
+    private readonly ILogger<ApostaController> _logger;
+        private readonly apiBambetsContext _context;
+ 
+    public ApostaController(ILogger<ApostaController> logger , apiBambetsContext context)
+       {
         _logger = logger;
-    }
+        _context = context;
+       }
 
-    private int nextId = 1;
+    [HttpGet]
+        public ActionResult<IEnumerable<Aposta>> Get()
+        {
+            var apostas = _context.Apostas.ToList();
+                if (apostas is null)
+                    return NotFound();
 
-    [HttpGet(Name = "ApostaG")]
+            return apostas;
+        }
 
-    public List<Aposta> GetAposta()
-    {
-        List<Aposta> ApostaList = new List<Aposta>();
-        
-        ApostaList.Add(new Aposta{
-            Id = nextId++,
-            Valor = 20,
-            Time_apostado = "Flamengo",
-        });
-        
-        ApostaList.Add(new Aposta{
-            Id = nextId++,
-            Valor = 10,
-            Time_apostado = "Corinthians",
-        });
-
-        ApostaList.Add(new Aposta{
-            Id = nextId++,
-            Valor = 5,
-            Time_apostado = "Santos",
-        });
-
-        return ApostaList;
-    }
-
-    [HttpPost(Name ="ApostaP")]
-
-    public IActionResult CreateAposta([FromBody] Aposta aposta)
-    {       {
-                return Ok();
-            }
-    }
+        [HttpGet("{id:int}", Name="GetAPosta")]
+        public ActionResult<Aposta> Get(int id)
+        {
+            var aposta = _context.Apostas.FirstOrDefault(p => p.Id == id);
+            if(aposta is null)
+                return NotFound("Não encontrado, parcero");
+            return aposta;
+        }
 }

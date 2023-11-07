@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Bambets.Models;
-using Bambets.Controllers;
+using apiBambets.Model;
 
-namespace Bambets.Controllers;
+namespace apiBambets.Controllers;
 
 [Route("[controller]")]
 [ApiController]

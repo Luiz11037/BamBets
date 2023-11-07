@@ -1,6 +1,6 @@
 using System;
 
-namespace Bambets.Models
+namespace apiBambets.Model
 {
      public class Jogo
     {
