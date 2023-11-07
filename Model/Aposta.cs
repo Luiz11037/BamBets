@@ -6,6 +6,6 @@ namespace apiBambets.Model
     {
         public int Id { get; set; }
         public int Valor { get; set; }
-        public string Time_apostado { get; set; }
+        public string? Time_apostado { get; set; }
     }
 }

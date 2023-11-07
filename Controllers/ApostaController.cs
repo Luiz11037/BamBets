@@ -22,7 +22,7 @@ namespace apiBambets.Controllers
         [HttpGet]
          public ActionResult<IEnumerable<Aposta>> Get()
         {
-            var apostas = _context.Apostas.ToList();
+            var apostas = _context.Apostas?.ToList(); // Após "Apostas" tem uma interrogação, pois essa variável pode ser nula, coloquei apenas para nao contar como erro, mais adequado, façam também.
                 if (apostas is null)
                     return NotFound();
 
@@ -32,7 +32,7 @@ namespace apiBambets.Controllers
         [HttpGet("{id:int}", Name="GetAPosta")]
         public ActionResult<Aposta> Get(int id)
         {
-            var aposta = _context.Apostas.FirstOrDefault(p => p.Id == id);
+            var aposta = _context.Apostas?.FirstOrDefault(p => p.Id == id); // Após "Apostas" tem uma interrogação, pois essa variável pode ser nula, coloquei apenas para nao contar como erro, mais adequado, façam também.
             if(aposta is null)
                 return NotFound("Não encontrado, parcero");
             return aposta;
@@ -41,7 +41,7 @@ namespace apiBambets.Controllers
         [HttpPost]
         public ActionResult Post(Aposta aposta)
         {
-            _context.Apostas.Add(aposta);
+            _context.Apostas?.Add(aposta); // Após "Apostas" tem uma interrogação, pois essa variável pode ser nula, coloquei apenas para nao contar como erro, mais adequado, façam também.
             _context.SaveChanges();
 
             return new CreatedAtRouteResult("GetAposta",
@@ -63,12 +63,12 @@ namespace apiBambets.Controllers
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
-            var aposta = _context.Apostas.FirstOrDefault(p => p.Id == id);
+            var aposta = _context.Apostas?.FirstOrDefault(p => p.Id == id); // Após "Apostas" tem uma interrogação, pois essa variável pode ser nula, coloquei apenas para nao contar como erro, mais adequado, façam também.
 
             if(aposta is null)
                 return NotFound();
 
-            _context.Apostas.Remove(aposta);
+            _context.Apostas?.Remove(aposta); // Após "Apostas" tem uma interrogação, pois essa variável pode ser nula, coloquei apenas para nao contar como erro, mais adequado, façam também.
             _context.SaveChanges();
 
             return Ok(aposta);
