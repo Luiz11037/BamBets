@@ -28,19 +28,19 @@ public class JogoController : ControllerBase
         apostadores1.Add(new Apostador{
             Nome = "Sivirino",
             Numero = 999999999,
-            Palpite = 1,
+            Palpite = "Fogão",
         });
 
         apostadores1.Add(new Apostador{
             Nome = "Vitinho",
             Numero = 999999999,
-            Palpite = 2,
+            Palpite = "Porco",
         });
 
         apostadores1.Add(new Apostador{
             Nome = "Carlos",
             Numero = 999999999,
-            Palpite = 1,
+            Palpite = "Mengão",
         });
 
 
