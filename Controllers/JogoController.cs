@@ -27,7 +27,7 @@ namespace apiBambets.Controllers
                 return NotFound();
             return jogos;
         }
-        
+
         [HttpGet("(id:int)", Name ="GetJogo")]
         public ActionResult<Jogo> Get(int id)
         {
@@ -51,7 +51,7 @@ namespace apiBambets.Controllers
             if(id != jogo.Id)
             return BadRequest();
 
-            _context.Entry(jogo).State = EntityState.Modified;
+            _context.Entry(jogo).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.SaveChanges();
 
             return Ok(jogo);
@@ -62,7 +62,7 @@ namespace apiBambets.Controllers
             var jogo = _context.Jogos?.FirstOrDefault(p => p.Id == id);
             if(jogo is null)
                 return NotFound();
-            _context.Jogos?.Remove(JogoController);
+            _context.Jogos?.Remove(jogo);
             _context.SaveChanges();
 
             return Ok(jogo);
