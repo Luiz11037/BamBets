@@ -1,80 +1,71 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using apiBambets.Model;
+using apiBambets.Context;
 
-namespace apiBambets.Controllers;
-
-[Route("[controller]")]
-[ApiController]
-public class JogoController : ControllerBase
+namespace apiBambets.Controllers
 {
-    private readonly ILogger<Jogo> _logger;
-    public JogoController(ILogger<Jogo> logger)
+    [Route("[controller]")]
+    [ApiController]
+
+    public class JogoController : ControllerBase
     {
-        _logger = logger;
-    }
-    // adicionando incrementador dos Ids.
-    private int nextId = 1;
+        private readonly ILogger<JogoController> _logger;
+        private readonly apiBambetsContext _context;
 
+        public JogoController(ILogger<JogoController> logger, apiBambetsContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
 
-    [HttpGet(Name = "Jogo")]
+        [HttpGet]
+        public ActionResult<IEnumerable<Jogo>> Get()
+        {
+            var jogos = _context.Jogos?.ToList();
+            if(jogos is null)
+                return NotFound();
+            return jogos;
+        }
+        
+        [HttpGet("(id:int)", Name ="GetJogo")]
+        public ActionResult<Jogo> Get(int id)
+        {
+            var jogo = _context.Jogos?.FirstOrDefault(p => p.Id == id);
+            if(jogo is null)
+                return NotFound("Jogo não encontrado");
+            return jogo;
+        }
 
-    // Esse public precisa especificar o tipo que será retornado, nesse caso o tipo é uma List<Jogo>
-    public List<Jogo> GetJogo()
-    {
+        [HttpPost]
+        public ActionResult Post(Jogo jogo)
+        {
+            _context.Jogos?.Add(jogo);
+            _context.SaveChanges();
 
-        //Criando uma lista de jogadores
-        List<Apostador> apostadores1 = new List<Apostador>();
-        apostadores1.Add(new Apostador{
-            Nome = "Sivirino",
-            Numero = 999999999,
-            Palpite = "Fogão",
-        });
+            return new CreatedAtRouteResult("GetJogo", new{id = jogo.Id}, jogo);
+        }
 
-        apostadores1.Add(new Apostador{
-            Nome = "Vitinho",
-            Numero = 999999999,
-            Palpite = "Porco",
-        });
+        [HttpPut("{id:int}")]
+        public ActionResult Put(int id, Jogo jogo){
+            if(id != jogo.Id)
+            return BadRequest();
 
-        apostadores1.Add(new Apostador{
-            Nome = "Carlos",
-            Numero = 999999999,
-            Palpite = "Mengão",
-        });
+            _context.Entry(jogo).State = EntityState.Modified;
+            _context.SaveChanges();
 
+            return Ok(jogo);
+        }
+        
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id){
+            var jogo = _context.Jogos?.FirstOrDefault(p => p.Id == id);
+            if(jogo is null)
+                return NotFound();
+            _context.Jogos?.Remove(JogoController);
+            _context.SaveChanges();
 
-        //Criando a lista de jogos
-        List<Jogo> JogoList = new List<Jogo>();
-        //Adicionando objetos em JogoList
-        JogoList.Add(new Jogo{
-        Id = nextId++,
-        Time1="Flamengo",
-        Time2="Fluminense",
-        apostadores_jogo = apostadores1,
-        });
-
-        JogoList.Add(new Jogo{
-        Id = nextId++,
-        Time1="Corinthians",
-        Time2="Palmeiras",
-        apostadores_jogo = apostadores1
-        });
-
-        JogoList.Add(new Jogo{
-        Id = nextId++,
-        Time1="Santos",
-        Time2="São Paulo",
-        apostadores_jogo = apostadores1,
-        });
-
-        return JogoList;
-    }
-    
-    [HttpPost(Name ="JogoP")]
-    public IActionResult CreateJogo( Jogo jogo)
-    {       {
-                return Ok();
-            }
+            return Ok(jogo);
+        }
     }
 }
