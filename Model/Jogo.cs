@@ -8,5 +8,10 @@ namespace apiBambets.Model
         public string? Time1 { get; set; }
         public string? Time2 { get; set; }
         public List<Apostador>? apostadores_jogo { get; set; }
+
+        public Jogo()
+        {
+            apostadores_jogo = new List<Apostador>();
+        }
     }
 }
