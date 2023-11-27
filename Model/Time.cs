@@ -5,8 +5,8 @@ namespace apiBambets.Model
     public class Time
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
+        public string Nome { get; set; } = "Time";
 
-    //Adicionar classe(model) time, adicionar um apostador e um jogo//
+
     }
 }
