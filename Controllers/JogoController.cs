@@ -28,7 +28,7 @@ namespace apiBambets.Controllers
             return jogos;
         }
 
-        [HttpGet("(id:int)", Name ="GetJogo")]
+        [HttpGet("{id:int}", Name ="GetJogo")]
         public ActionResult<Jogo> Get(int id)
         {
             var jogo = _context.Jogos?.FirstOrDefault(p => p.Id == id);
