@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using apiBambets.Context;
@@ -11,13 +12,15 @@ using apiBambets.Context;
 namespace Bambets.Migrations
 {
     [DbContext(typeof(apiBambetsContext))]
-    partial class apiBambetsContextModelSnapshot : ModelSnapshot
+    [Migration("20231113105931_AdicionarListaDeJogadoresJogoDeNovo")]
+    partial class AdicionarListaDeJogadoresJogoDeNovo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.14")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

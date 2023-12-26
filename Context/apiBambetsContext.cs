@@ -15,4 +15,5 @@ public class apiBambetsContext : DbContext
 
     public DbSet<Apostador>? Apostadores {get; set;}
     public DbSet<Jogo>? Jogos {get; set;}
+    public DbSet<Time>? Times {get; set;}
 }

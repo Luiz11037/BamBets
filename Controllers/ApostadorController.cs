@@ -1,51 +1,75 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using apiBambets.Model;
+using apiBambets.Context;
 
-namespace apiBambets.Controllers;
-
-[Route("[controller]")]
-[ApiController]
-
-public class ApostadorController : ControllerBase
+namespace apiBambets.Controllers
 {
-    private readonly ILogger<Apostador> _logger;
-    public ApostadorController(ILogger<Apostador> logger)
+    [Route("[controller]")]
+    [ApiController]
+
+    public class ApostadorController : ControllerBase
     {
-        _logger = logger;
-    }
+        private readonly ILogger<ApostadorController> _logger;
+        private readonly apiBambetsContext _context;
 
-    [HttpGet(Name = "Apostador")]  
+        public ApostadorController(ILogger<ApostadorController> logger, apiBambetsContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
 
-    public List<Apostador> GetApostador()
-    {
-        List<Apostador> ApostadorList = new List<Apostador>();
+        [HttpGet(Name = "Apostador")]  
+        public ActionResult<IEnumerable<Apostador>> Get()
+        {
+            var apostadores = _context.Apostadores?.ToList();
+                if (apostadores is null)
+                    return NotFound();
+            return apostadores;
+        }
 
-        ApostadorList.Add(new Apostador{
-                Nome = "Valderci",
-                Numero = 999999999,
-                Palpite = 1,
-            });
+        [HttpGet("{id:int}", Name="GetApostador")]  
+        public ActionResult<Apostador> Get(int id)
+        {
+            var apostador = _context.Apostadores?.FirstOrDefault(p => p.Id == id);
+            if (apostador is null)
+                return NotFound();
+            return apostador;
+        }
 
-            ApostadorList.Add(new Apostador{
-                Nome = "Miltão",
-                Numero = 999999999,
-                Palpite = 2,
-            });
+        [HttpPost]
+        public ActionResult Post(Apostador apostador)
+        {
+            _context.Apostadores?.Add(apostador);
+            _context.SaveChanges();
 
-            ApostadorList.Add(new Apostador{
-                Nome = "Marquitos",
-                Numero = 999999999,
-                Palpite = 2,
-            });
+            return new CreatedAtRouteResult("GetApostador", new{id = apostador.Id}, apostador);
+        }
 
-            return ApostadorList;       
-    }
+        [HttpPut("{id:int}")]
+        public ActionResult Put(int id, Apostador apostador)
+        {
+            if(id != apostador.Id)
+                return BadRequest();
 
-    [HttpPost(Name="ApostadorP")]
-    public IActionResult CreateApostador([FromBody] Apostador apostador)
-    {       {
-                return Ok();
-            }
+            _context.Entry(apostador).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.SaveChanges();
+
+            return Ok(apostador);
+        }
+
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id)
+        {
+            var apostador = _context.Apostadores?.FirstOrDefault(p => p.Id == id);
+
+            if(apostador is null)
+                return NotFound();
+
+            _context.Apostadores?.Remove(apostador);
+            _context.SaveChanges();
+
+            return Ok(apostador);
+        }
     }
 }
