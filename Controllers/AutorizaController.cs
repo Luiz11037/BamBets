@@ -60,7 +60,7 @@ namespace apiUniversidade.Controllers
                 return "AutorizaController :: Acessado em: " + DateTime.Now.ToLongDateString();
             }
 
-        [HttpPost("registeer")]
+        [HttpPost("register")]
             public async Task<ActionResult> RegisterUser([FromBody]UserDTO model)
             {
                 IdentityUser user = new IdentityUser
