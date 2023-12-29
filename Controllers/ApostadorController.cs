@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using apiBambets.Model;
 using apiBambets.Context;
+using Microsoft.AspNetCore.Authorization;
 
 namespace apiBambets.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("[controller]")]
     [ApiController]
 
