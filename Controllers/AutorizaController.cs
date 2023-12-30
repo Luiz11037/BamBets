@@ -11,6 +11,7 @@ namespace apiUniversidade.Controllers
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
+    [ApiVersion("1.0")]
     [Route("[controller]")]    
     public class AutorizaController : Controller
     {

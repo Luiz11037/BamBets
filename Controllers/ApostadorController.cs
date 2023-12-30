@@ -8,6 +8,7 @@ namespace apiBambets.Controllers
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
 
     public class ApostadorController : ControllerBase
