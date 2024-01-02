@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace apiBambets.Controllers
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [Route("[controller]")]
+    [Route("api/{v:apiversion}/aposta")]
     [ApiVersion("1.0")]
     [ApiController]
 
