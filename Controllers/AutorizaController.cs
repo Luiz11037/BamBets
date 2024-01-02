@@ -7,9 +7,8 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 
-namespace apiUniversidade.Controllers
+namespace apiBambets.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("[controller]")]    
